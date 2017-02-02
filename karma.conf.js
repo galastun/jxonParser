@@ -5,7 +5,7 @@ module.exports = function(config) {
 		files: [
 			'./node_modules/angular/angular.js',
 			'./node_modules/angular-mocks/angular-mocks.js',
-            './src/jxon.factory.js',
+            './src/jxonParser.js',
 			'./test/jxon.spec.js'
 		],
 		exclude: [],

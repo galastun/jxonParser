@@ -4,7 +4,8 @@
   "description": "Parses XML into JSON.",
   "main": "''",
   "scripts": {
-    "test": "karma start"
+    "test": "karma start",
+    "min": "uglifyjs src/jxonParser.js -m -o dist/jxonParser.min.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "karma": "^1.4.1",
     "karma-chrome-launcher": "^2.0.0",
     "karma-jasmine": "^1.1.0",
-    "karma-spec-reporter": "0.0.26"
+    "karma-spec-reporter": "0.0.26",
+    "uglify-js": "^2.7.5"
   }
 }
