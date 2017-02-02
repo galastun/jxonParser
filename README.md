@@ -1,4 +1,4 @@
-This code was ported from (DMGambone/JXON-Parser)[https://github.com/DMGambone/JXON-Parser] to be
+This code was ported from [DMGambone/JXON-Parser](https://github.com/DMGambone/JXON-Parser) to be
 and Angular service. Thanks!
 
 #JXON - JavaScript XML Object Notation
