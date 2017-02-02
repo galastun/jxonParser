@@ -1,4 +1,4 @@
-let jxonFactory = angular.module("jxonParser", []);
+var jxonFactory = angular.module("jxonParser", []);
 jxonFactory.factory('jxonParser', jxonParser);
 
 function jxonParser() {
@@ -180,7 +180,7 @@ function jxonParser() {
 	  * @returns {Promise}  A promise that resolves to the JavaScript Object representing the XML Node
 	  */
 	function parseXMLFile(blob) {
-		let _base = this;
+		var _base = this;
 		var promise = new Promise(function(resolve, reject) {
 			var reader = new FileReader();
 			
