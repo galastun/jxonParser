@@ -1,0 +1,33 @@
+{
+  "name": "jxon-parser",
+  "version": "1.0.0",
+  "description": "Parses XML into JSON.",
+  "main": "''",
+  "scripts": {
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/galastun/JXON-Parser.git"
+  },
+  "keywords": [
+    "json",
+    "xml",
+    "jxon"
+  ],
+  "author": "Galastun",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/galastun/JXON-Parser/issues"
+  },
+  "homepage": "https://github.com/galastun/JXON-Parser#readme",
+  "devDependencies": {
+    "angular": "^1.5.8",
+    "angular-mocks": "^1.6.1",
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.4.1",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-spec-reporter": "0.0.26"
+  }
+}

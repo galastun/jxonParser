@@ -1,44 +1,29 @@
-﻿/**
-  * JXON (JavaScript XML Object Notation) is a library that converts a standard XML document to a valid JSON object
-  * in the most natural format possible
-  * @author Dino M. Gambone
-  * @version 1.0
-  */
-var JXON = (function()
-{
+let jxonFactory = angular.module("jxonParser", []);
+jxonFactory.factory('jxonParser', jxonParser);
+
+function jxonParser() {
+    return {
+        parseXML: parseXML,
+        parseNode: parseNode,
+        parseXMLFile: parseXMLFile,
+        toString: toString
+    };
+
 	/** 
 	  * Represents a single instance of an XMLNode in JXON format
 	  * @param {JXONNode} [parent] A parent node to this instance
 	  */
-	function JXONNode(parent)
-	{
+	function JXONNode(parent) {
 		this["#parent"] = parent;
 	}
 
-	JXONNode.prototype.toString = function()
-	{
-		if(this["#text"] !== undefined)
-			return this["#text"];
-
-		return "[Object JXONNode]";
-	}
-
-	/**
-	  * JXON Parser class
-	  */
-	function JXONParser()
-	{
-		this.emptyXMLValue = null;
-	}
-
-	/**
+    /**
 	  * Parses an XML Node.  If the XML Node contains children, those children will also
 	  * be parsed.
 	  * @param {IXMLDOMElement} xmlNode Any object implementing the W3C IXMLDOMElement interface
 	  * @returns {JXONNode} The JXONNode object representing the XML Node
 	  */
-	JXONParser.prototype.parseNode = function(xmlNode, jxonParent)
-	{
+    function parseNode(xmlNode, jxonParent) {
 		/**
 		  * Converts a string value to it's closest native format
 		  * @param {String} value the value to convert
@@ -67,10 +52,12 @@ var JXON = (function()
 			var children = null, length = 0, idx = 0;
 			var elements = [];
 
-			children = node.attributes;
-			length = children.length;
-			for(idx = 0; idx < length; idx++)
-				elements.push(children.item(idx));
+			if(node.attributes) {
+				children = node.attributes;
+				length = children.length;
+				for(idx = 0; idx < length; idx++)
+					elements.push(children.item(idx));
+			}
 
 			children = node.childNodes;
 			length = children.length;
@@ -163,8 +150,7 @@ var JXON = (function()
 	  * @param {String} xml Valid XML string
 	  * @returns {Object} The JavaScript Object representing the XML Node
 	  */
-	JXONParser.prototype.parseXML = function(xml)
-	{
+	function parseXML(xml) {
 		if (window.DOMParser)
 		{
 			parser = new DOMParser();
@@ -189,56 +175,29 @@ var JXON = (function()
 	}
 
 	/**
-	  * Loads an XML document and parses it.
-	  * @param {String} url The URL of the XML file to parse
-	  * @param {Function} callback The callback method to call when the file is loaded and parsed.  
-	  * The callback will receive 1 parameter which will either be an instance of Error 
-	  * in the case of an error or a generic object.
-	  * @returns {Object} The JavaScript Object representing the XML Node if callback is not specified.  If 
-	  * callback is specified, this will return undefined.
+	  * Loads an XML document from a file and parses it.
+	  * @param {Blob} blob The file to parse
+	  * @returns {Promise}  A promise that resolves to the JavaScript Object representing the XML Node
 	  */
-	JXONParser.prototype.parseXMLFile = function(url, callback)
-	{
-		var xhr = null;
-		if (window.XMLHttpRequest)
-			xhr = new XMLHttpRequest();
-		else // IE 5/6
-			xhr = new ActiveXObject("Microsoft.XMLHTTP");
+	function parseXMLFile(blob) {
+		let _base = this;
+		var promise = new Promise(function(resolve, reject) {
+			var reader = new FileReader();
 			
-		var async = (callback instanceof Function);
-		xhr.open("GET", url, async);
-		if(async)
-		{
-			var self = this;
-			xhr.onreadystatechange = function()
-			{
-				if(xhr.readyState != 4)
-					return;
-
-				if(xhr.status !== 200)
-					callback(new Error(xhr.responseText));
-
-				callback(self.parseXML(xhr.responseText));
-			}
-
-			xhr.send(null);
-			return undefined;
-		}
-		else
-		{
-			xhr.send(null);
-			if(xhr.status != 200)
-				throw new Error(xhr.responseText);
-
-			return this.parseXML(xhr.responseText);
-		}
+			reader.addEventListener("loadend", function() {
+				resolve(_base.parseXML(reader.result));
+			});
+			
+			reader.readAsText(blob);
+		});
+		
+		return promise;
 	}
 
-	var module = 
-	{
-		Node: JXONNode
-		, Parser: JXONParser
-	};
-	return module;
+    function toString() {
+		if(this["#text"] !== undefined)
+			return this["#text"];
 
-})();
+		return "[Object JXONNode]";
+	}
+}
